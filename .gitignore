@@ -1,0 +1,28 @@
+# Python virtual environments & caches
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Databases and Local Configurations
+.env
+*.db
+sentinelx.db
+
+# Frontend node modules & build outputs
+node_modules/
+dist/
+build/
+.eslintcache
+
+# Editor & System configs
+.idea/
+.vscode/
+Thumbs.db
+Desktop.ini
+
+# ML Models artifacts (will be generated locally on boot)
+backend/app/models/ml/*.joblib

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SentinelX Live Events</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            padding: 30px;
+        }
+
+        #events {
+            margin-top: 20px;
+        }
+
+        .event {
+            background: #222;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .critical {
+            border-left: 5px solid red;
+        }
+
+        .high {
+            border-left: 5px solid orange;
+        }
+
+        .medium {
+            border-left: 5px solid yellow;
+        }
+
+        .low {
+            border-left: 5px solid green;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>SentinelX — Live Security Events</h1>
+
+<div id="status">Connecting...</div>
+
+<div id="events"></div>
+
+<script>
+
+const status = document.getElementById("status");
+const events = document.getElementById("events");
+
+const socket = new WebSocket(
+    "ws://127.0.0.1:8000/ws/events"
+);
+
+socket.onopen = function() {
+    status.innerText = "🟢 CONNECTED";
+};
+
+socket.onclose = function() {
+    status.innerText = "🔴 DISCONNECTED";
+};
+
+socket.onerror = function() {
+    status.innerText = "⚠️ CONNECTION ERROR";
+};
+
+socket.onmessage = function(event) {
+
+    const data = JSON.parse(event.data);
+
+    const element = document.createElement("div");
+
+    element.className =
+        "event " +
+        data.severity.toLowerCase();
+
+    element.innerHTML = `
+        <strong>${data.event_type}</strong>
+        <br>
+        Severity: ${data.severity}
+        <br>
+        Host: ${data.host}
+        <br>
+        User: ${data.user}
+        <br>
+        Source IP: ${data.source_ip}
+        <br>
+        Time: ${data.timestamp}
+        <br>
+        ${data.message}
+    `;
+
+    events.prepend(element);
+};
+
+</script>
+
+</body>
+</html>
