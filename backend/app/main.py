@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.core.enums import WebSocketMessageType
@@ -31,6 +32,15 @@ app = FastAPI(
     title="SentinelX",
     description="Real-Time Autonomous Cyber Defense Platform",
     version="0.1.0",
+)
+
+# Add CORS Middleware to allow requests from the React development server
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Register API Routers
